@@ -12,7 +12,7 @@ const SimpleTestGenerator: React.FC = () => {
     setGeneratedCode('');
 
     try {
-      const response = await fetch('http://localhost:8000/generate-tests', {
+      const response = await fetch('http://127.0.0.1:8000/generate-tests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,6 +29,7 @@ const SimpleTestGenerator: React.FC = () => {
       const data = await response.json();
       setGeneratedCode(data.test_suite_code);
     } catch (error) {
+      console.error('Error generating test suite:', error);
       setGeneratedCode(`Error: ${error instanceof Error ? error.message : 'An error occurred'}`);
     } finally {
       setIsLoading(false);
