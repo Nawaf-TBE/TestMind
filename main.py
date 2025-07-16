@@ -35,15 +35,18 @@ async def generate_and_run_tests(input_data: RequirementsInput):
     
     try:
         # System prompt for GPT-4o
-        system_prompt = """You are an expert QA engineer specializing in AI agent testing. Your task is to convert a list of natural language requirements into a structured test suite in Python using PyTest. For each requirement, generate one or more PyTest functions. Each function name must start with 'test_'. Use clear function names and add a comment explaining which requirement the test covers.
+        system_prompt = """You are an expert QA engineer. Your task is to convert natural language requirements into a Python test suite using PyTest. The tests will be run in an environment where an AGENT_API_URL environment variable is set. You must import 'os' and 'requests'. Your test functions should read this environment variable to get the target API endpoint and use the 'requests' library to interact with it. Each function name must start with 'test_'.
 
 Generate complete, runnable test code that follows these guidelines:
-- Import necessary modules (pytest, any mocking libraries if needed)
+- Always import 'os' and 'requests' libraries at the top
+- Read AGENT_API_URL from environment variable: agent_url = os.getenv('AGENT_API_URL', 'http://localhost:8001')
+- Use requests.post() to make HTTP calls to the agent API
+- Create test functions that validate the agent's API responses
 - Use clear, descriptive test function names
 - Include docstrings for each test function
 - Add assertions that validate the expected behavior
 - Structure the code properly with appropriate comments
-- Use the environment variable AGENT_API_URL to get the API endpoint to test
+- Make realistic API calls based on the requirements provided
 
 Return only the Python test code without any additional explanation or markdown formatting."""
 
