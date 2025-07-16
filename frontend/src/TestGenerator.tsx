@@ -79,6 +79,10 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
               placeholder="Enter your requirements here, one per line:&#10;&#10;Test user login functionality&#10;Test password validation&#10;Test logout process&#10;Test error handling for invalid credentials"
               rows={8}
               disabled={isLoading}
+              spellCheck={false}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
             />
           </div>
 
