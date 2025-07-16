@@ -70,7 +70,10 @@ Return only the Python test code without any additional explanation or markdown 
         
         # Prepare environment variables for the test run
         test_env = os.environ.copy()
-        test_env["AGENT_API_URL"] = input_data.agent_api_url
+        agent_api_url = input_data.agent_api_url
+        agent_api_url = "http://127.0.0.1:8001/invoke"
+        print(f"DEBUG: Forcing agent URL to: {agent_api_url}")
+        test_env["AGENT_API_URL"] = agent_api_url
         
         # Run pytest on the temporary file
         result = subprocess.run(
