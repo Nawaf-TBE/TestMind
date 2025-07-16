@@ -80,6 +80,21 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
 
         <div className="test-generator__form">
           <div className="test-generator__input-section">
+            <label htmlFor="agentApiUrl" className="test-generator__label">
+              Agent API URL
+            </label>
+            <input
+              id="agentApiUrl"
+              type="url"
+              className="test-generator__input"
+              value={agentApiUrl}
+              onChange={(e) => setAgentApiUrl(e.target.value)}
+              placeholder="http://my-agent-api.com/invoke"
+              disabled={isLoading}
+            />
+          </div>
+
+          <div className="test-generator__input-section">
             <label htmlFor="requirements" className="test-generator__label">
               Requirements (one per line):
             </label>
@@ -95,21 +110,6 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
-            />
-          </div>
-
-          <div className="test-generator__input-section">
-            <label htmlFor="agentApiUrl" className="test-generator__label">
-              Agent API URL:
-            </label>
-            <input
-              id="agentApiUrl"
-              type="url"
-              className="test-generator__input"
-              value={agentApiUrl}
-              onChange={(e) => setAgentApiUrl(e.target.value)}
-              placeholder="https://your-agent-api.com/api"
-              disabled={isLoading}
             />
           </div>
 
@@ -139,7 +139,7 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
           {generatedTests && (
             <div className="test-generator__output-section">
               <div className="test-generator__output-header">
-                <label className="test-generator__label">Generated Test Suite:</label>
+                <h2>Generated Test Suite</h2>
                 <button
                   className="test-generator__button test-generator__button--copy"
                   onClick={handleCopyToClipboard}
@@ -156,9 +156,7 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
 
           {testResults && (
             <div className="test-generator__output-section">
-              <div className="test-generator__output-header">
-                <label className="test-generator__label">Test Results:</label>
-              </div>
+              <h2>Test Results</h2>
               <pre className="test-generator__output test-generator__output--results">
                 <code>{testResults}</code>
               </pre>
