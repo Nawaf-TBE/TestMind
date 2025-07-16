@@ -64,6 +64,7 @@
   resize: vertical;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   background: #fafafa;
+  color: #1f2937;
   text-decoration: none;
   -webkit-text-decoration-skip: none;
   text-decoration-skip: none;
@@ -78,11 +79,12 @@
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   background: white;
+  color: #1f2937;
 }
 
 .test-generator__textarea:disabled {
   background: #f3f4f6;
-  color: #9ca3af;
+  color: #6b7280;
   cursor: not-allowed;
 }
 
