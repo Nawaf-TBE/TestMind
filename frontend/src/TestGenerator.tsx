@@ -75,7 +75,7 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
       <div className="test-generator__container">
         <h1 className="test-generator__title">TestMind - AI Test Generator</h1>
         <p className="test-generator__subtitle">
-          Convert your requirements into professional PyTest test suites using AI
+          Convert your requirements into professional test suites using AI
         </p>
 
         <div className="test-generator__form">
