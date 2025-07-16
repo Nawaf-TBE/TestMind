@@ -2,23 +2,27 @@ import React, { useState } from 'react';
 
 const SimpleTestGenerator: React.FC = () => {
   const [requirements, setRequirements] = useState<string>('');
+  const [agentApiUrl, setAgentApiUrl] = useState<string>('');
   const [generatedCode, setGeneratedCode] = useState<string>('');
+  const [testResults, setTestResults] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleGenerateTestSuite = async () => {
-    if (!requirements.trim()) return;
+    if (!requirements.trim() || !agentApiUrl.trim()) return;
 
     setIsLoading(true);
     setGeneratedCode('');
+    setTestResults('');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/generate-tests', {
+      const response = await fetch('http://127.0.0.1:8000/generate-and-run-tests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           requirements: requirements,
+          agent_api_url: agentApiUrl,
         }),
       });
 
@@ -28,6 +32,7 @@ const SimpleTestGenerator: React.FC = () => {
 
       const data = await response.json();
       setGeneratedCode(data.test_suite_code);
+      setTestResults(data.test_results);
     } catch (error) {
       console.error('Error generating test suite:', error);
       setGeneratedCode(`Error: ${error instanceof Error ? error.message : 'An error occurred'}`);
@@ -75,17 +80,34 @@ Test error handling for invalid credentials"
         disabled={isLoading}
       />
 
+      <input
+        type="url"
+        value={agentApiUrl}
+        onChange={(e) => setAgentApiUrl(e.target.value)}
+        placeholder="https://your-agent-api.com/api"
+        style={{
+          width: '100%',
+          padding: '12px',
+          fontSize: '14px',
+          border: '2px solid #ddd',
+          borderRadius: '8px',
+          marginBottom: '20px',
+          boxSizing: 'border-box'
+        }}
+        disabled={isLoading}
+      />
+
       <button
         onClick={handleGenerateTestSuite}
-        disabled={isLoading || !requirements.trim()}
+        disabled={isLoading || !requirements.trim() || !agentApiUrl.trim()}
         style={{
-          backgroundColor: isLoading || !requirements.trim() ? '#ccc' : '#007bff',
+          backgroundColor: isLoading || !requirements.trim() || !agentApiUrl.trim() ? '#ccc' : '#007bff',
           color: 'white',
           padding: '12px 24px',
           fontSize: '16px',
           border: 'none',
           borderRadius: '6px',
-          cursor: isLoading || !requirements.trim() ? 'not-allowed' : 'pointer',
+          cursor: isLoading || !requirements.trim() || !agentApiUrl.trim() ? 'not-allowed' : 'pointer',
           marginBottom: '30px',
           width: '100%'
         }}
@@ -106,17 +128,39 @@ Test error handling for invalid credentials"
         )}
         
         {generatedCode && !isLoading && (
-          <pre style={{
-            backgroundColor: '#f8f9fa',
-            border: '1px solid #e9ecef',
-            borderRadius: '6px',
-            padding: '20px',
-            overflow: 'auto',
-            fontSize: '14px',
-            lineHeight: '1.5'
-          }}>
-            <code>{generatedCode}</code>
-          </pre>
+          <div>
+            <h3 style={{ color: '#333', marginBottom: '10px' }}>Generated Test Suite:</h3>
+            <pre style={{
+              backgroundColor: '#f8f9fa',
+              border: '1px solid #e9ecef',
+              borderRadius: '6px',
+              padding: '20px',
+              overflow: 'auto',
+              fontSize: '14px',
+              lineHeight: '1.5',
+              marginBottom: '20px'
+            }}>
+              <code>{generatedCode}</code>
+            </pre>
+          </div>
+        )}
+
+        {testResults && !isLoading && (
+          <div>
+            <h3 style={{ color: '#333', marginBottom: '10px' }}>Test Results:</h3>
+            <pre style={{
+              backgroundColor: '#065f46',
+              border: '1px solid #047857',
+              borderRadius: '6px',
+              padding: '20px',
+              overflow: 'auto',
+              fontSize: '14px',
+              lineHeight: '1.5',
+              color: '#d1fae5'
+            }}>
+              <code>{testResults}</code>
+            </pre>
+          </div>
         )}
       </div>
     </div>

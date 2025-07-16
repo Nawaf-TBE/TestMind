@@ -88,6 +88,33 @@
   cursor: not-allowed;
 }
 
+.test-generator__input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: #fafafa;
+  color: #1f2937;
+  box-sizing: border-box;
+}
+
+.test-generator__input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: white;
+}
+
+.test-generator__input:disabled {
+  background: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
 .test-generator__actions {
   display: flex;
   gap: 1rem;
@@ -189,6 +216,16 @@
   padding: 0;
   font-family: inherit;
   font-size: inherit;
+}
+
+.test-generator__output--results {
+  background: #065f46;
+  border: 1px solid #047857;
+  color: #d1fae5;
+}
+
+.test-generator__output--results code {
+  color: #d1fae5;
 }
 
 /* Responsive Design */

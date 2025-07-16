@@ -5,7 +5,9 @@ interface TestGeneratorProps {}
 
 const TestGenerator: React.FC<TestGeneratorProps> = () => {
   const [requirements, setRequirements] = useState<string>('');
+  const [agentApiUrl, setAgentApiUrl] = useState<string>('');
   const [generatedTests, setGeneratedTests] = useState<string>('');
+  const [testResults, setTestResults] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
@@ -15,18 +17,25 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
       return;
     }
 
+    if (!agentApiUrl.trim()) {
+      setError('Please enter the agent API URL');
+      return;
+    }
+
     setIsLoading(true);
     setError('');
     setGeneratedTests('');
+    setTestResults('');
 
     try {
-      const response = await fetch('http://localhost:8000/generate-tests', {
+      const response = await fetch('http://localhost:8000/generate-and-run-tests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           requirements: requirements,
+          agent_api_url: agentApiUrl,
         }),
       });
 
@@ -36,6 +45,7 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
 
       const data = await response.json();
       setGeneratedTests(data.test_suite_code);
+      setTestResults(data.test_results);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -45,7 +55,9 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
 
   const handleClearAll = () => {
     setRequirements('');
+    setAgentApiUrl('');
     setGeneratedTests('');
+    setTestResults('');
     setError('');
   };
 
@@ -86,11 +98,26 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
             />
           </div>
 
+          <div className="test-generator__input-section">
+            <label htmlFor="agentApiUrl" className="test-generator__label">
+              Agent API URL:
+            </label>
+            <input
+              id="agentApiUrl"
+              type="url"
+              className="test-generator__input"
+              value={agentApiUrl}
+              onChange={(e) => setAgentApiUrl(e.target.value)}
+              placeholder="https://your-agent-api.com/api"
+              disabled={isLoading}
+            />
+          </div>
+
           <div className="test-generator__actions">
             <button
               className="test-generator__button test-generator__button--primary"
               onClick={handleGenerateTests}
-              disabled={isLoading || !requirements.trim()}
+              disabled={isLoading || !requirements.trim() || !agentApiUrl.trim()}
             >
               {isLoading ? 'Generating Tests...' : 'Generate Tests'}
             </button>
@@ -123,6 +150,17 @@ const TestGenerator: React.FC<TestGeneratorProps> = () => {
               </div>
               <pre className="test-generator__output">
                 <code>{generatedTests}</code>
+              </pre>
+            </div>
+          )}
+
+          {testResults && (
+            <div className="test-generator__output-section">
+              <div className="test-generator__output-header">
+                <label className="test-generator__label">Test Results:</label>
+              </div>
+              <pre className="test-generator__output test-generator__output--results">
+                <code>{testResults}</code>
               </pre>
             </div>
           )}
