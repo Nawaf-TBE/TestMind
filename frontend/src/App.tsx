@@ -1,7 +1,7 @@
-import SimpleTestGenerator from './SimpleTestGenerator'
+import TestGenerator from './TestGenerator'
 
 function App() {
-  return <SimpleTestGenerator />
+  return <TestGenerator />
 }
 
 export default App
