@@ -3,7 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
 import subprocess
+import sys
 from openai import OpenAI
+
+print(f"DEBUG: Using Python executable: {sys.executable}")
+print(f"DEBUG: System PATH: {os.environ.get('PATH')}")
 
 # Initialize FastAPI app
 app = FastAPI(title="TestMind API", description="API for generating test suites", version="1.0.0")
